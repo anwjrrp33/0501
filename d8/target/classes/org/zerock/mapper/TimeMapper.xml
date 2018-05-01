@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.TimeMapper">
+
+  <select id="getTime" resultType="string">
+  select now()
+  </select>
+  
+  <select id="insertT1">
+  insert into tbl_t1 (val) values (#{val})
+  </select>
+  
+  <select id="insertT2">
+  insert into tbl_t2 (val) values (#{val})
+  </select>
+
+
+</mapper>  
