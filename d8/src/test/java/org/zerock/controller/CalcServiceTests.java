@@ -16,12 +16,16 @@ import lombok.extern.log4j.Log4j;
 public class CalcServiceTests {
 	
 	@Setter(onMethod_={@Autowired})
-	private CalcService	 service;
+	private CalcService service;
 	
 	@Test
 	public void testAdd1() {
 		
+		log.info(service.add2("123", "123"));
 		log.info(service.getClass().getName());
 		log.info(service.add("123", "456"));
+		
+		
+		
 	}
 }

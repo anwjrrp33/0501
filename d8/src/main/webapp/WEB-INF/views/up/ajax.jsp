@@ -8,42 +8,112 @@
 </head>
 <body>
 
-	<input type='file' id='upload' multiple>
-	<button id='btn'>click</button>
+<style>
 
+.uploadUL li {
+	
+	list-style: none;
+	
+}
+
+
+</style>
+	<div>
+		
+		<img alt="" src="/temp1">
+		<form id="uploadForm">
+			<input type='file' id='upload' multiple>
+		</form>
+		<button id='btn'>click</button>
+	</div>
+
+	<div>
+		<ul class="uploadUL">
+		</ul>
+	</div>
+	
+	<style>
+	#wall {
+	width: 100%;
+	height:500px;
+	border: 1px soild red;
+	background-color: gray;
+	position: absolute;
+	display: none;
+	z-index: 100;
+	justify-content: center;
+	align-items: center;
+	}
+	</style>
+	
+	<div id="wall" >
+	
+	</div>
+	
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 		crossorigin="anonymous"></script>
 
 	<script>
+		var uploadUL = $(".uploadUL");
+
 		var uploadInput = $("#upload");
+		
+		var wall = $("#wall");
 
 		$("#btn").on("click", function(e) {
 
-			console.log("click...")
+					console.log("click...")
+					var formData = new FormData();
 
-			var formData = new FormData();
+					console.log(uploadInput[0].files);
 
-			console.log(uploadInput[0].files);
+					var files = uploadInput[0].files;
 
-			var files = uploadInput[0].files;
+					for (var i = 0; i < files.length; i++) {
 
-			for (var i = 0; i < files.length; i++) {
+						formData.append("file", files[i]);
+					}
 
-				formData.append("file", files[i]);
-			}
+					$.ajax({
+						url : 'ajax',
+						data : formData,
+						processData : false,
+						contentType : false,
+						type : 'POST',
+						success : function(data) {
+							console.log(data);
 
-			$.ajax({
-				url : 'form',
-				data : formData,
-				processData : false,
-				contentType : false,
-				type : 'POST',
-				success : function(data) {
-					alert("EE");
-				}
-			});
-		});
+							var str = ""
+
+							for (var i = 0; i < data.length; i++) {
+								str += "<li data-file='"+ data[i] + "'><img src='/display?file=s_" + data[i]
+										+ "'></li>";
+							}
+
+							uploadUL.append(str);
+
+							$("#uploadForm")[0].reset();
+						}
+					});
+					
+					$(".uploadUL").on("click", "li", function(e) {
+						
+						console.log("li clicked");
+						//$(this).attr("data-file")
+						var fileName = $(this).data("file");
+						
+						var str = "<img src='/display?file=" + fileName + "'>";
+						
+						wall.html(str);
+						wall.show("slow");
+					});
+					
+					wall.on("click", function(e) {
+						
+						wall.hide("slow");
+					});
+				});
 	</script>
 </body>
 </html>
